@@ -123,7 +123,7 @@ btn.onclick = async () => {
 
     for (let i = 0; i < todo.length; i++) {
       try {
-        await chrome.scripting.executeScript({
+        const res = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: async (wsId, t) => {
             const r = await fetch(`/backend-api/accounts/${wsId}/invites/request`, {
@@ -136,11 +136,16 @@ btn.onclick = async () => {
               },
               credentials: "include"
             });
-            return await r.json();
+            return { status: r.status, data: await r.json() };
           },
           args: [todo[i], token]
         });
-        addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "ok", "\u2713");
+        const { status, data } = res[0].result;
+        if (status >= 200 && status < 300) {
+          addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "ok", "\u2713");
+        } else {
+          addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}... ${data.error || ""}`, "err", "\u2717");
+        }
         setMini(`[${i + 1}/${todo.length}] Inviting...`);
       } catch (e) {
         addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "err", "\u2717");
