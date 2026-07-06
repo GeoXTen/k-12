@@ -243,18 +243,22 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .mini-log .dot {
+  .mini-log .dot { display: none; }
+  .mini-log .icon {
     display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+    width: 14px;
+    height: 14px;
     margin-right: 8px;
     vertical-align: middle;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+    border-radius: 50%;
   }
-  .mini-log .dot.idle { background: #333; }
-  .mini-log .dot.run { background: #fff; animation: pulse 1s infinite; }
-  .mini-log .dot.done { background: #fff; }
-  .mini-log .dot.err { background: #666; }
+  .mini-log .icon.idle { background: #333; color: #333; }
+  .mini-log .icon.run { background: #fff; color: #000; animation: pulse 1s infinite; }
+  .mini-log .icon.done { background: #fff; color: #000; }
+  .mini-log .icon.err { background: #666; color: #000; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 </style>
 </head>
@@ -293,7 +297,7 @@
     </div>
     <div class="log" id="log"></div>
     <div class="mini-log" id="miniLog">
-      <span class="dot idle" id="miniDot"></span>
+      <span class="icon idle" id="miniIcon">~</span>
       <span id="miniText">Ready</span>
     </div>
   </div>

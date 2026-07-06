@@ -6,12 +6,14 @@ const progressText = document.getElementById("progressText");
 const count = document.getElementById("count");
 const textarea = document.getElementById("ids");
 const miniLog = document.getElementById("miniLog");
-const miniDot = document.getElementById("miniDot");
+const miniIcon = document.getElementById("miniIcon");
 const miniText = document.getElementById("miniText");
 
 const setMini = (text, state = "run") => {
   miniLog.style.display = "block";
-  miniDot.className = `dot ${state}`;
+  miniIcon.className = `icon ${state}`;
+  const icons = { idle: "~", run: "~", done: "\u2713", err: "\u2717" };
+  miniIcon.textContent = icons[state] || "~";
   miniText.textContent = text;
 };
 
