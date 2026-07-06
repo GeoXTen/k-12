@@ -31,6 +31,14 @@ btn.onclick = async () => {
   if (!input) { alert("Paste workspace IDs first!"); return; }
 
   const W = input.split("\n").map(s => s.trim()).filter(s => s.length > 0);
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const valid = W.filter(id => uuidRegex.test(id));
+  const invalid = W.filter(id => !uuidRegex.test(id));
+
+  if (invalid.length) {
+    addLog(`Skipped ${invalid.length} invalid ID(s)`, "err");
+  }
+
   btn.classList.add("loading");
   btn.disabled = true;
   progress.style.display = "block";
@@ -80,8 +88,8 @@ btn.onclick = async () => {
     });
     const accounts = curr[0].result || [];
     const myIds = new Set(Array.isArray(accounts) ? accounts.map(a => a.id || a.account_id || "") : []);
-    const todo = W.filter(id => !myIds.has(id));
-    addLog(`${W.length - myIds.size} joined, ${todo.length} pending`, "info");
+    const todo = valid.filter(id => !myIds.has(id));
+    addLog(`${valid.length - todo.length} joined, ${todo.length} pending`, "info");
 
     if (!todo.length) {
       addLog("All done", "ok");
