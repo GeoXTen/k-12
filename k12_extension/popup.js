@@ -5,6 +5,15 @@ const progressFill = document.getElementById("progressFill");
 const progressText = document.getElementById("progressText");
 const count = document.getElementById("count");
 const textarea = document.getElementById("ids");
+const miniLog = document.getElementById("miniLog");
+const miniDot = document.getElementById("miniDot");
+const miniText = document.getElementById("miniText");
+
+const setMini = (text, state = "run") => {
+  miniLog.style.display = "block";
+  miniDot.className = `dot ${state}`;
+  miniText.textContent = text;
+};
 
 textarea.addEventListener("input", () => {
   const lines = textarea.value.trim().split("\n").filter(s => s.length > 0);
@@ -52,12 +61,14 @@ btn.onclick = async () => {
 
     if (!tab.url || !tab.url.includes("chatgpt.com")) {
       addLog("Open chatgpt.com first", "err");
+      setMini("Not on chatgpt.com", "err");
       btn.classList.remove("loading");
       btn.disabled = false;
       return;
     }
 
     addLog("Authenticating...", "info");
+    setMini("Authenticating...");
     const results = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: async () => {
@@ -69,8 +80,10 @@ btn.onclick = async () => {
     });
     const token = results[0].result;
     addLog("Token acquired", "ok");
+    setMini("Token OK");
 
     addLog("Checking workspaces...", "info");
+    setMini("Checking workspaces...");
     const curr = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: async (t) => {
@@ -93,6 +106,7 @@ btn.onclick = async () => {
 
     if (!todo.length) {
       addLog("All done", "ok");
+      setMini("All done", "done");
       updateProgress(1, 1);
       btn.classList.remove("loading");
       btn.disabled = false;
@@ -119,15 +133,19 @@ btn.onclick = async () => {
           args: [todo[i], token]
         });
         addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "ok");
+        setMini(`[${i + 1}/${todo.length}] Inviting...`);
       } catch (e) {
         addLog(`[${i + 1}/${todo.length}] Failed`, "err");
+        setMini(`[${i + 1}/${todo.length}] Failed`, "err");
       }
       updateProgress(i + 1, todo.length);
       if (i < todo.length - 1) await new Promise(r => setTimeout(r, 1000));
     }
     addLog("Complete", "ok");
+    setMini("Complete", "done");
   } catch (e) {
     addLog(e.message, "err");
+    setMini(e.message, "err");
   }
   btn.classList.remove("loading");
   btn.disabled = false;
