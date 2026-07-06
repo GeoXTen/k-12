@@ -1,4 +1,4 @@
-# ChatGPT K12 Bulk Invite
+# GPT K12 Mass Invite
 
 > Chrome extension to bulk invite users to multiple ChatGPT K12 workspaces at once.
 
