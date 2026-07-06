@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 380px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    overflow: hidden;
+  }
+  .header {
+    padding: 20px 20px 15px;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    border-bottom: 1px solid #222;
+    position: relative;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #fff 0%, #666 50%, #fff 100%);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-icon {
+    width: 42px;
+    height: 42px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    color: #000;
+    letter-spacing: -0.5px;
+  }
+  .logo-text h1 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .logo-text span {
+    font-size: 11px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .content { padding: 16px 20px; }
+  .input-group {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #444;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  textarea {
+    width: 100%;
+    height: 120px;
+    background: #111;
+    color: #fff;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    resize: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: #444;
+  }
+  textarea::placeholder { color: #333; }
+  .count {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 10px;
+    color: #333;
+    font-family: monospace;
+  }
+  .btn-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .border-anim {
+    position: absolute;
+    width: 300%;
+    height: 50%;
+    opacity: 0.7;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .border-bottom {
+    bottom: -12px;
+    right: -250%;
+    background: radial-gradient(circle, #fff, transparent 10%);
+    animation: star-bottom 6s linear infinite alternate;
+  }
+  .border-top {
+    top: -12px;
+    left: -250%;
+    background: radial-gradient(circle, #fff, transparent 10%);
+    animation: star-top 6s linear infinite alternate;
+  }
+  @keyframes star-bottom {
+    0% { transform: translate(0%, 0%); opacity: 1; }
+    100% { transform: translate(-100%, 0%); opacity: 0; }
+  }
+  @keyframes star-top {
+    0% { transform: translate(0%, 0%); opacity: 1; }
+    100% { transform: translate(100%, 0%); opacity: 0; }
+  }
+  .btn {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 14px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #222;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .btn:hover {
+    background: #111;
+    transform: translateY(-1px);
+  }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled {
+    background: #111;
+    color: #444;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn .spinner {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .btn.loading .spinner { display: inline-block; }
+  .btn.loading .btn-text { opacity: 0.6; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .progress-wrap {
+    margin-top: 14px;
+    display: none;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .progress-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #444;
+  }
+  .progress-pct {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: monospace;
+  }
+  .progress-track {
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
+  }
+
+  .log {
+    margin-top: 14px;
+    max-height: 140px;
+    overflow-y: auto;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    display: none;
+  }
+  .log::-webkit-scrollbar { width: 4px; }
+  .log::-webkit-scrollbar-track { background: transparent; }
+  .log::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+  .log div {
+    padding: 4px 0;
+    border-bottom: 1px solid #111;
+  }
+  .log .ok { color: #fff; }
+  .log .err { color: #666; }
+  .log .info { color: #444; }
+
+  .footer {
+    padding: 12px 20px;
+    border-top: 1px solid #111;
+    text-align: center;
+    font-size: 9px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">K12</div>
+      <div class="logo-text">
+        <h1>Bulk Invite</h1>
+        <span>Workspace Manager</span>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="input-group">
+      <label>Workspace IDs</label>
+      <textarea id="ids" placeholder="Paste workspace IDs (one per line)&#10;&#10;47336c9d-7607-4478-b37c-018049af1e46&#10;ff598c4d-ccaf-40c1-bfaa-cb94565764b1"></textarea>
+      <div class="count" id="count">0</div>
+    </div>
+    <div class="btn-wrap">
+      <div class="border-anim border-bottom"></div>
+      <div class="border-anim border-top"></div>
+      <button class="btn" id="btn">
+        <span class="spinner"></span>
+        <span class="btn-text">Execute</span>
+      </button>
+    </div>
+    <div class="progress-wrap" id="progress">
+      <div class="progress-header">
+        <span class="progress-label">Progress</span>
+        <span class="progress-pct" id="progressText">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="footer">v1.0</div>
+  <script src="popup.js"></script>
+</body>
+</html>
