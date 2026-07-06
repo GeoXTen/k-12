@@ -22,11 +22,17 @@ textarea.addEventListener("input", () => {
   count.textContent = lines.length;
 });
 
-const addLog = (msg, cls = "info") => {
+const addLog = (msg, cls = "info", status = "") => {
   log.style.display = "block";
   const d = document.createElement("div");
   d.className = cls;
-  d.textContent = msg;
+  if (status) {
+    const s = document.createElement("span");
+    s.className = "status";
+    s.textContent = status;
+    d.appendChild(s);
+  }
+  d.appendChild(document.createTextNode(msg));
   log.appendChild(d);
   log.scrollTop = log.scrollHeight;
 };
@@ -134,10 +140,10 @@ btn.onclick = async () => {
           },
           args: [todo[i], token]
         });
-        addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "ok");
+        addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "ok", "\u2713");
         setMini(`[${i + 1}/${todo.length}] Inviting...`);
       } catch (e) {
-        addLog(`[${i + 1}/${todo.length}] Failed`, "err");
+        addLog(`[${i + 1}/${todo.length}] ${todo[i].slice(0, 8)}...`, "err", "\u2717");
         setMini(`[${i + 1}/${todo.length}] Failed`, "err");
       }
       updateProgress(i + 1, todo.length);
