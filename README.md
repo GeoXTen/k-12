@@ -9,9 +9,11 @@
 - Bulk invite to multiple workspaces in one click
 - Auto-detects and skips workspaces you're already in
 - Real-time progress bar with percentage
-- Live activity log with checkmark/X status
+- Live activity log with checkmark/X status per invite
+- Mini status indicator with animated icon
+- UUID validation - skips invalid IDs automatically
 - Animated glow border on execute button
-- Minimalist dark theme
+- Minimalist black & white dark theme
 
 ## Installation
 
@@ -28,6 +30,7 @@
 3. Paste workspace IDs (one per line)
 4. Click **Execute**
 5. Watch the progress
+6. Refresh page to see new workspaces
 
 ## Workspace ID Format
 
@@ -36,6 +39,14 @@
 ff598c4d-ccaf-40c1-bfaa-cb94565764b1
 1e595494-2426-4946-b688-58ba75604bcc
 ```
+
+## Log Status
+
+| Icon | Meaning |
+|------|---------|
+| ✓ | Invite sent successfully |
+| ✗ | Invite failed |
+| ~ | Processing |
 
 ## Notes
 
