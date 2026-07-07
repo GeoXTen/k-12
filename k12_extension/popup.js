@@ -155,6 +155,7 @@ btn.onclick = async () => {
       if (i < todo.length - 1) await new Promise(r => setTimeout(r, 1000));
     }
     addLog("Complete", "ok");
+    addLog("Refresh the page to see new workspaces", "info");
     setMini("Complete", "done");
   } catch (e) {
     addLog(e.message, "err");
